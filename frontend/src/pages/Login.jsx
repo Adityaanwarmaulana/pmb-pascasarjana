@@ -34,12 +34,9 @@ const Login = () => {
       } else {
         // KHUSUS PENDAFTAR: Cek apakah sudah mengisi form pendaftaran
         try {
-          const check = await axios.get(
-            "http://127.0.0.1:8000/api/check-pendaftaran",
-            {
-              headers: { Authorization: `Bearer ${access_token}` },
-            },
-          );
+          const check = await axios.get(`${API_URL}/check-pendaftaran`, {
+            headers: { Authorization: `Bearer ${access_token}` },
+          });
 
           if (check.data.registered) {
             // Jika sudah daftar, arahkan ke Dashboard Status
