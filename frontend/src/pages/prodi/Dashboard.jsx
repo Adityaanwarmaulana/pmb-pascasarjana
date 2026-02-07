@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LogOut, ClipboardCheck, GraduationCap } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "https://127.0.0.1:8000/api";
 
 const DashboardProdi = () => {
   const [pendaftar, setPendaftar] = useState([]);
