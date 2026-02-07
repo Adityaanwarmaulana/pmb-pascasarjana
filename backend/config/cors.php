@@ -19,7 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://pmb-pascasarjana.vercel.app/api'],
+    'allowed_origins' => [
+        'https://pmb-pascasarjana.vercel.app',
+        'https://pmb-pascasarjana-git-main-adityaanwarmaulanas-projects.vercel.app',
+        'http://localhost:5173',
+    ],
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +33,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
