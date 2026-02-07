@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FileText, Calendar, CheckCircle, Clock, Printer } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
 const PendaftarDashboard = () => {
   const navigate = useNavigate();
   const [regData, setRegData] = useState(null);
@@ -13,12 +15,9 @@ const PendaftarDashboard = () => {
   useEffect(() => {
     const fetchMyStatus = async () => {
       try {
-        const res = await axios.get(
-          "http://127.0.0.1:8000/api/my-pendaftaran",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const res = await axios.get(`${API_URL}/my-pendaftaran`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setRegData(res.data);
       } catch (err) {
         console.error("Belum ada data pendaftaran");

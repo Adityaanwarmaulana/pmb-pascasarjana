@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -14,7 +16,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://127.0.0.1:8000/api/register", formData);
+      await axios.post(`${API_URL}/register`, formData);
       alert("Registrasi Berhasil! Silakan Login.");
       navigate("/login");
     } catch (err) {

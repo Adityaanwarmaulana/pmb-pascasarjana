@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
 const FormPendaftaran = () => {
   const [formData, setFormData] = useState({
     jenjang: "S2",
@@ -21,7 +23,7 @@ const FormPendaftaran = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("http://127.0.0.1:8000/api/pendaftaran", data, {
+      await axios.post(`${API_URL}/pendaftaran`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

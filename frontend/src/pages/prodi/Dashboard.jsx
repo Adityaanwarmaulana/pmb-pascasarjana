@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LogOut, ClipboardCheck, GraduationCap } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
 const DashboardProdi = () => {
   const [pendaftar, setPendaftar] = useState([]);
   const token = localStorage.getItem("token");
@@ -13,12 +15,9 @@ const DashboardProdi = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(
-        "http://127.0.0.1:8000/api/pendaftaran-prodi",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      const res = await axios.get(`${API_URL}/pendaftaran-prodi`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setPendaftar(res.data);
     } catch (err) {
       console.error("Gagal mengambil data prodi");
@@ -35,7 +34,7 @@ const DashboardProdi = () => {
     if (nilai && status) {
       try {
         await axios.patch(
-          `http://127.0.0.1:8000/api/pendaftaran/${id}/nilai`,
+          `${API_URL}/pendaftaran/${id}/nilai`,
           { nilai_ujian: nilai, status_kelulusan: status.toLowerCase() },
           { headers: { Authorization: `Bearer ${token}` } },
         );

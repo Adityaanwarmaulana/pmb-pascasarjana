@@ -11,6 +11,8 @@ import {
   Calendar,
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+
 const AdminDashboard = () => {
   const [pendaftar, setPendaftar] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,7 +25,7 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get("http://127.0.0.1:8000/api/pendaftaran", {
+      const res = await axios.get(`${API_URL}/pendaftaran`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPendaftar(res.data);
@@ -37,7 +39,7 @@ const AdminDashboard = () => {
       return;
     try {
       await axios.patch(
-        `http://127.0.0.1:8000/api/pendaftaran/${id}/status`,
+        `${API_URL}/pendaftaran/${id}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -56,7 +58,7 @@ const AdminDashboard = () => {
     if (tanggal && ruang) {
       try {
         await axios.post(
-          `http://127.0.0.1:8000/api/pendaftaran/set-jadwal`,
+          `${API_URL}/pendaftaran/set-jadwal`,
           { pendaftaran_id: id, tanggal_ujian: tanggal, ruangan: ruang },
           { headers: { Authorization: `Bearer ${token}` } },
         );
