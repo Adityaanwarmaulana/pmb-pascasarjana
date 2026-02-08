@@ -11,7 +11,9 @@ import {
   Calendar,
 } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://127.0.0.1:8000/api";
+// Ambil URL dasar (hilangkan /api untuk keperluan akses folder storage)
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const BASE_URL = API_URL.replace("/api", "");
 
 const AdminDashboard = () => {
   const [pendaftar, setPendaftar] = useState([]);
@@ -72,7 +74,7 @@ const AdminDashboard = () => {
 
   const filteredData = pendaftar.filter((item) => {
     const matchesSearch = item.user?.name
-      .toLowerCase()
+      ?.toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesFilter =
       filterStatus === "all" || item.status_verifikasi === filterStatus;
@@ -92,10 +94,8 @@ const AdminDashboard = () => {
           >
             <Users size={20} /> Data Pendaftar
           </div>
-
-          {/* Laporan PDF */}
           <div
-            onClick={() => window.print()} // Fungsi cetak cepat untuk laporan tabel
+            onClick={() => window.print()}
             className="p-3 hover:bg-green-800 rounded-lg flex items-center gap-3 transition cursor-pointer text-gray-300"
           >
             <FileText size={20} /> Laporan PDF
@@ -167,9 +167,7 @@ const AdminDashboard = () => {
                     <div className="flex justify-center gap-2">
                       <button
                         onClick={() =>
-                          window.open(
-                            `http://127.0.0.1:8000/storage/${item.dokumen_pdf}`,
-                          )
+                          window.open(`${BASE_URL}/storage/${item.dokumen_pdf}`)
                         }
                         className="p-1.5 bg-blue-50 text-blue-600 rounded"
                       >
@@ -177,9 +175,7 @@ const AdminDashboard = () => {
                       </button>
                       <button
                         onClick={() =>
-                          window.open(
-                            `http://127.0.0.1:8000/storage/${item.foto_jpg}`,
-                          )
+                          window.open(`${BASE_URL}/storage/${item.foto_jpg}`)
                         }
                         className="p-1.5 bg-purple-50 text-purple-600 rounded"
                       >

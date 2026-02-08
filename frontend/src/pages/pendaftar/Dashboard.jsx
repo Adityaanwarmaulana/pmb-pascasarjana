@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FileText, Calendar, CheckCircle, Clock, Printer } from "lucide-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://127.0.0.1:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
+const BASE_URL = API_URL.replace("/api", "");
 
 const PendaftarDashboard = () => {
   const navigate = useNavigate();
@@ -41,7 +42,6 @@ const PendaftarDashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      {/* TAMPILAN DASHBOARD (Akan disembunyikan saat print oleh CSS di bawah) */}
       <div className="max-w-6xl mx-auto screen-only">
         <header className="mb-8 flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm">
           <div>
@@ -55,13 +55,7 @@ const PendaftarDashboard = () => {
           <div className="flex items-center gap-4">
             {regData && (
               <div
-                className={`px-4 py-2 rounded-lg font-black text-sm uppercase shadow-sm ${
-                  regData.status_verifikasi === "pending"
-                    ? "bg-amber-100 text-amber-700"
-                    : regData.status_verifikasi === "disetujui"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                }`}
+                className={`px-4 py-2 rounded-lg font-black text-sm uppercase shadow-sm ${regData.status_verifikasi === "pending" ? "bg-amber-100 text-amber-700" : regData.status_verifikasi === "disetujui" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
               >
                 {regData.status_verifikasi}
               </div>
@@ -79,7 +73,6 @@ const PendaftarDashboard = () => {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Step 1: Formulir */}
           <div
             className={`p-6 rounded-xl shadow-sm border-t-4 bg-white ${regData ? "border-green-500" : "border-gray-300"}`}
           >
@@ -91,8 +84,6 @@ const PendaftarDashboard = () => {
               {regData ? "Data Terkirim" : "Belum Mengisi"}
             </p>
           </div>
-
-          {/* Step 2: Verifikasi */}
           <div
             className={`p-6 rounded-xl shadow-sm bg-white border-t-4 ${regData?.status_verifikasi === "disetujui" ? "border-green-500" : "border-amber-500"} ${!regData && "opacity-40"}`}
           >
@@ -111,8 +102,6 @@ const PendaftarDashboard = () => {
                 : "Proses"}
             </p>
           </div>
-
-          {/* Step 3: Jadwal */}
           <div
             className={`p-6 rounded-xl shadow-sm bg-white border-t-4 border-blue-500 ${!regData?.jadwal && "opacity-40"}`}
           >
@@ -132,8 +121,6 @@ const PendaftarDashboard = () => {
               </div>
             )}
           </div>
-
-          {/* Step 4: Kartu */}
           <div
             className={`p-6 rounded-xl shadow-sm bg-white border-t-4 border-green-600 ${(!regData?.jadwal || regData?.status_verifikasi !== "disetujui") && "opacity-40"}`}
           >
@@ -151,7 +138,7 @@ const PendaftarDashboard = () => {
         </div>
       </div>
 
-      {/* TAMPILAN KHUSUS KARTU (Hidden di layar, Muncul saat Print) */}
+      {/* KARTU PRINT */}
       <div
         id="print-area"
         className="hidden print:block bg-white p-10 border-[10px] border-double border-green-900 w-[800px] mx-auto"
@@ -162,17 +149,16 @@ const PendaftarDashboard = () => {
           </h1>
           <p className="text-xl">PMB PASCASARJANA 2026/2027</p>
         </div>
-
         <div className="flex gap-10">
-          <div className="w-48 h-64 bg-gray-200 border-2 border-black flex items-center justify-center relative">
-            <img
-              src={`http://127.0.0.1:8000/storage/${regData?.foto_jpg}`}
-              alt="Foto"
-              className="w-full h-full object-cover"
-              onError={(e) =>
-                (e.target.src = "https://via.placeholder.com/150")
-              }
-            />
+          <div className="w-48 h-64 bg-gray-200 border-2 border-black flex items-center justify-center relative overflow-hidden">
+            {regData?.foto_jpg && (
+              <img
+                src={`${BASE_URL}/storage/${regData.foto_jpg}`}
+                alt="Foto"
+                className="w-full h-full object-cover"
+                onError={(e) => (e.target.src = "https://placehold.co/150")}
+              />
+            )}
           </div>
           <div className="flex-1 space-y-4">
             <div>
@@ -210,28 +196,8 @@ const PendaftarDashboard = () => {
             </div>
           </div>
         </div>
-        <div className="mt-12 flex justify-between items-end">
-          <div className="text-[10px] text-gray-400">
-            Dicetak pada: {new Date().toLocaleString()}
-          </div>
-          <div className="text-center">
-            <p className="text-xs mb-10">Panitia PMB,</p>
-            <p className="font-bold border-t border-black px-4 pt-1">
-              Sistem Otomatis
-            </p>
-          </div>
-        </div>
       </div>
-
-      {/* CSS MAGIC UNTUK PRINT */}
-      <style>{`
-        @media print {
-          .screen-only { display: none !important; }
-          #print-area { display: block !important; visibility: visible !important; }
-          @page { size: landscape; margin: 0; }
-          body { background: white; }
-        }
-      `}</style>
+      <style>{`@media print { .screen-only { display: none !important; } #print-area { display: block !important; } @page { size: landscape; margin: 0; } }`}</style>
     </div>
   );
 };
