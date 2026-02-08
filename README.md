@@ -43,13 +43,7 @@ Admin,admin,password
 Prodi,prodi,password
 
 ### 4. Mengenai Deployment (Online)
-GitHub hanya menyimpan kode (Repository). Untuk membuatnya **Online (Bisa diakses publik)**, kamu butuh layanan tambahan:
-
-* **Frontend (React):** Bisa dideploy gratis ke **Vercel** atau **Netlify**.
-* **Backend (Laravel):** Butuh Hosting/VPS (seperti Niagahoster, DomaiNesia, atau Heroku/Railway).
-* **Penting:** Karena ini menggunakan database MySQL, deployment ke layanan gratisan agak rumit. Saya sarankan untuk tahap awal, GitHub digunakan sebagai **Portfolio Kode** saja.
-
----
+GitHub hanya menyimpan kode (Repository).
 
 ### Kesimpulan Akhir
 1.  Error `sessions` tadi sudah aman (pakai driver `file`).
