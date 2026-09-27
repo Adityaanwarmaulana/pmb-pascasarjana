@@ -15,7 +15,10 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+    ],
 
     'allowed_methods' => ['*'],
 
@@ -23,6 +26,7 @@ return [
         'https://pmb-pascasarjana.vercel.app',
         'https://pmb-pascasarjana-git-main-adityaanwarmaulanas-projects.vercel.app',
         'http://localhost:5173',
+        'http://127.0.0.1:5173',
     ],
 
     'allowed_origins_patterns' => [],
@@ -31,7 +35,7 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    'max_age' => 86400,
 
     'supports_credentials' => false,
 
