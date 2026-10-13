@@ -94,27 +94,27 @@ const DashboardProdi = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans">
       {/* Topbar Navigation */}
-      <nav className="bg-slate-950 border-b border-slate-800 px-6 py-4 flex justify-between items-center backdrop-blur-md sticky top-0 z-40">
+      <nav className="bg-white border-b border-slate-200/80 px-6 py-4 flex justify-between items-center shadow-sm sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold shadow-lg shadow-emerald-900/40">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-orange-500 flex items-center justify-center text-white font-bold shadow-md shadow-orange-500/20">
             <GraduationCap size={22} />
           </div>
           <div>
-            <h1 className="font-bold text-base text-white leading-tight">
+            <h1 className="font-bold text-base text-slate-900 leading-tight">
               Panel Program Studi
             </h1>
-            <p className="text-xs text-slate-400">PMB Pascasarjana</p>
+            <p className="text-xs text-slate-500">PMB Pascasarjana</p>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold text-white">
+            <p className="text-sm font-semibold text-slate-900">
               {user?.name || "Dosen Penguji"}
             </p>
-            <p className="text-xs text-emerald-400 font-mono">
+            <p className="text-xs text-amber-700 font-mono font-medium">
               Tim Seleksi Prodi
             </p>
           </div>
@@ -123,7 +123,7 @@ const DashboardProdi = () => {
               localStorage.clear();
               window.location.href = "/login";
             }}
-            className="p-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded-xl border border-rose-500/20 transition"
+            className="p-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl border border-rose-200/60 transition"
             title="Logout"
           >
             <LogOut size={18} />
@@ -133,66 +133,67 @@ const DashboardProdi = () => {
 
       {/* Content Container */}
       <div className="p-6 md:p-10 flex-1 max-w-7xl w-full mx-auto space-y-8">
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-950/40 p-6 rounded-2xl border border-slate-800 backdrop-blur-md">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
               Penilaian & Kelulusan Seleksi
             </h2>
-            <p className="text-slate-400 text-sm mt-1">
+            <p className="text-slate-500 text-sm mt-1">
               Input nilai hasil ujian masuk dan tentukan status akhir pendaftar
               prodi Anda.
             </p>
           </div>
-          <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-4 py-2 rounded-xl text-xs font-semibold">
-            <Sparkles size={14} /> Akses Penilaian Aktif
+          <div className="flex items-center gap-2 bg-amber-50 border border-amber-200/60 text-amber-800 px-4 py-2 rounded-xl text-xs font-semibold">
+            <Sparkles size={14} className="text-amber-600" /> Akses Penilaian
+            Aktif
           </div>
         </header>
 
         {/* Ringkasan Status */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl">
-            <p className="text-xs text-slate-400 font-medium">
+          <div className="bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm">
+            <p className="text-xs text-slate-500 font-medium">
               Total Pendaftar Prodi
             </p>
-            <p className="text-2xl font-black text-white mt-2">{stats.total}</p>
-          </div>
-          <div className="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl">
-            <p className="text-xs text-emerald-400 font-medium">
-              Sudah Dinilai
+            <p className="text-2xl font-black text-slate-900 mt-1">
+              {stats.total}
             </p>
-            <p className="text-2xl font-black text-emerald-400 mt-2">
+          </div>
+          <div className="bg-white border border-amber-200/80 p-5 rounded-2xl shadow-sm">
+            <p className="text-xs text-amber-700 font-medium">Sudah Dinilai</p>
+            <p className="text-2xl font-black text-amber-600 mt-1">
               {stats.dinilai}
             </p>
           </div>
-          <div className="bg-slate-950/40 border border-slate-800 p-5 rounded-2xl">
-            <p className="text-xs text-blue-400 font-medium">
+          <div className="bg-white border border-emerald-200/80 p-5 rounded-2xl shadow-sm">
+            <p className="text-xs text-emerald-700 font-medium">
               Direkomendasikan Lulus
             </p>
-            <p className="text-2xl font-black text-blue-400 mt-2">
+            <p className="text-2xl font-black text-emerald-600 mt-1">
               {stats.lulus}
             </p>
           </div>
         </div>
 
         {/* Tabel Penilaian */}
-        <div className="bg-slate-950/40 border border-slate-800 rounded-2xl p-6 space-y-6">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-6">
           <div className="relative max-w-md">
             <Search
-              className="absolute left-3.5 top-3 text-slate-500"
+              className="absolute left-3.5 top-3 text-slate-400"
               size={18}
             />
             <input
               type="text"
               placeholder="Cari nama pendaftar..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-slate-800/80">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-slate-900/80 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full text-left text-sm text-slate-700">
+              <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
                 <tr>
                   <th className="p-4">Nama Pendaftar</th>
                   <th className="p-4">Program Studi</th>
@@ -202,10 +203,10 @@ const DashboardProdi = () => {
                   <th className="p-4 text-center">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 bg-slate-950/20">
+              <tbody className="divide-y divide-slate-100 bg-white">
                 {filteredData.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-slate-500">
+                    <td colSpan={6} className="p-8 text-center text-slate-400">
                       Belum ada data pendaftar yang diverifikasi oleh Admin.
                     </td>
                   </tr>
@@ -213,13 +214,13 @@ const DashboardProdi = () => {
                   filteredData.map((item) => (
                     <tr
                       key={item.id}
-                      className="hover:bg-slate-900/40 transition"
+                      className="hover:bg-slate-50/80 transition"
                     >
-                      <td className="p-4 font-semibold text-white">
+                      <td className="p-4 font-semibold text-slate-900">
                         {item.user?.name || "N/A"}
                       </td>
-                      <td className="p-4 text-slate-400">
-                        <span className="px-2.5 py-1 bg-slate-800 rounded-lg text-xs font-mono">
+                      <td className="p-4 text-slate-600">
+                        <span className="px-2.5 py-1 bg-slate-100 rounded-lg text-xs font-mono font-medium">
                           {item.prodi || "-"}
                         </span>
                       </td>
@@ -233,7 +234,7 @@ const DashboardProdi = () => {
                                   "_blank",
                                 )
                               }
-                              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition"
+                              className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition"
                               title="Lihat Berkas PDF"
                             >
                               <FileText size={16} />
@@ -247,7 +248,7 @@ const DashboardProdi = () => {
                                   "_blank",
                                 )
                               }
-                              className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition"
+                              className="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition"
                               title="Lihat Pasfoto"
                             >
                               <Eye size={16} />
@@ -255,20 +256,20 @@ const DashboardProdi = () => {
                           )}
                         </div>
                       </td>
-                      <td className="p-4 text-center font-mono font-bold text-emerald-400 text-base">
+                      <td className="p-4 text-center font-mono font-bold text-amber-600 text-base">
                         {item.nilai_ujian !== null ? item.nilai_ujian : "-"}
                       </td>
                       <td className="p-4 text-center">
                         {item.status_kelulusan === "lulus" ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                             <CheckCircle2 size={12} /> Lulus
                           </span>
                         ) : item.status_kelulusan === "tidak lulus" ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
                             <XCircle size={12} /> Tidak Lulus
                           </span>
                         ) : (
-                          <span className="text-xs text-slate-500 italic">
+                          <span className="text-xs text-slate-400 italic">
                             Belum Dinilai
                           </span>
                         )}
@@ -276,7 +277,7 @@ const DashboardProdi = () => {
                       <td className="p-4 text-center">
                         <button
                           onClick={() => handleOpenModal(item)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white rounded-xl border border-emerald-500/30 transition text-xs font-semibold"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 hover:bg-amber-600 text-amber-700 hover:text-white rounded-xl border border-amber-200 transition text-xs font-semibold"
                         >
                           <ClipboardCheck size={14} /> Input Nilai
                         </button>
@@ -292,16 +293,16 @@ const DashboardProdi = () => {
 
       {/* Modal Custom Input Nilai */}
       {selectedItem && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Award className="text-emerald-400" size={20} /> Input Hasil
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 shadow-xl space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Award className="text-amber-600" size={20} /> Input Hasil
                 Seleksi
               </h3>
               <button
                 onClick={() => setSelectedItem(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-slate-600"
               >
                 <X size={20} />
               </button>
@@ -309,19 +310,19 @@ const DashboardProdi = () => {
 
             <form onSubmit={handleSaveNilai} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-500 mb-1">
                   Nama Pendaftar
                 </label>
                 <input
                   type="text"
                   disabled
                   value={selectedItem.user?.name || ""}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-400"
+                  className="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-600 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-500 mb-1">
                   Nilai Ujian Seleksi (0 - 100)
                 </label>
                 <input
@@ -330,7 +331,7 @@ const DashboardProdi = () => {
                   max="100"
                   step="0.1"
                   placeholder="Contoh: 85.5"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:border-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-800 focus:border-amber-500 focus:bg-white focus:outline-none"
                   value={nilaiForm.nilai_ujian}
                   onChange={(e) =>
                     setNilaiForm({ ...nilaiForm, nilai_ujian: e.target.value })
@@ -340,11 +341,11 @@ const DashboardProdi = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">
+                <label className="block text-xs font-medium text-slate-500 mb-1">
                   Keputusan Akhir
                 </label>
                 <select
-                  className="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-amber-500 focus:bg-white"
                   value={nilaiForm.status_kelulusan}
                   onChange={(e) =>
                     setNilaiForm({
@@ -362,14 +363,14 @@ const DashboardProdi = () => {
                 <button
                   type="button"
                   onClick={() => setSelectedItem(null)}
-                  className="flex-1 px-4 py-2.5 bg-slate-800 text-slate-300 rounded-xl text-sm font-semibold hover:bg-slate-700 transition"
+                  className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-sm font-semibold hover:bg-slate-200 transition"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-500 transition shadow-lg shadow-emerald-900/40"
+                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-xl text-sm font-semibold hover:from-amber-700 hover:to-orange-600 transition shadow-md shadow-orange-500/20"
                 >
                   {isSubmitting ? "Menyimpan..." : "Simpan Hasil"}
                 </button>

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  GraduationCap,
+  FileText,
+  Image,
+  ArrowRight,
+  AlertCircle,
+} from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 
@@ -11,9 +19,15 @@ const FormPendaftaran = () => {
     dokumen_pdf: null,
     foto_jpg: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
     const data = new FormData();
     data.append("jenjang", formData.jenjang);
     data.append("prodi", formData.prodi);
@@ -29,102 +43,144 @@ const FormPendaftaran = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      alert("Berhasil Daftar!");
+      alert("Pendaftaran berhasil dikirim! Menuju dashboard status...");
+      navigate("/pendaftar/dashboard");
     } catch (err) {
-      alert("Gagal mengirim data. Cek kembali format file Anda.");
+      setError(
+        err.response?.data?.message ||
+          "Gagal mengirim data. Pastikan format file PDF (<2MB) dan foto JPG/PNG.",
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-8 bg-white shadow-xl rounded-2xl border-t-8 border-primary-dark">
-      <h2 className="text-2xl font-bold text-primary-dark mb-6">
-        Formulir Pendaftaran Pascasarjana
-      </h2>
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 md:p-8 font-sans text-slate-800">
+      <div className="max-w-2xl w-full bg-white shadow-xl rounded-3xl border border-slate-200/80 p-8 md:p-10 space-y-8">
+        {/* Header */}
+        <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
+          <div className="w-12 h-12 bg-gradient-to-tr from-amber-600 to-orange-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-orange-500/20 shrink-0">
+            <GraduationCap size={24} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+              Formulir Pendaftaran Pascasarjana
+            </h2>
+            <p className="text-slate-500 text-sm mt-0.5">
+              Lengkapi informasi akademik dan unggah dokumen persyaratan
+              seleksi.
+            </p>
+          </div>
+        </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Jenjang Pendidikan
-          </label>
-          <select
-            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary-light outline-none"
-            onChange={(e) =>
-              setFormData({ ...formData, jenjang: e.target.value })
-            }
+        {error && (
+          <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-2xl flex items-center gap-3 text-sm">
+            <AlertCircle size={18} className="text-rose-500 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                Jenjang Pendidikan
+              </label>
+              <select
+                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 focus:outline-none focus:border-amber-500 focus:bg-white transition-all"
+                value={formData.jenjang}
+                onChange={(e) =>
+                  setFormData({ ...formData, jenjang: e.target.value })
+                }
+              >
+                <option value="S2">Magister (S2)</option>
+                <option value="S3">Doktor (S3)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+                Program Studi Pilihan
+              </label>
+              <input
+                type="text"
+                placeholder="Contoh: Magister Ilmu Komputer"
+                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all"
+                value={formData.prodi}
+                onChange={(e) =>
+                  setFormData({ ...formData, prodi: e.target.value })
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">
+              Pendidikan Terakhir (Asal Kampus & Jurusan)
+            </label>
+            <input
+              type="text"
+              placeholder="Contoh: S1 Teknik Informatika - Universitas Indonesia"
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-500 focus:bg-white transition-all"
+              value={formData.pendidikan_terakhir}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  pendidikan_terakhir: e.target.value,
+                })
+              }
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+              {/* DI-PERBAIKI: Menghapus 'block' dan menggunakan 'flex' saja */}
+              <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                <FileText size={14} className="text-amber-600" /> Berkas
+                Ijazah/Transkrip (PDF)
+              </label>
+              <input
+                type="file"
+                accept=".pdf"
+                className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer"
+                onChange={(e) =>
+                  setFormData({ ...formData, dokumen_pdf: e.target.files[0] })
+                }
+                required
+              />
+            </div>
+
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2">
+              {/* DI-PERBAIKI: Menghapus 'block' dan menggunakan 'flex' saja */}
+              <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                <Image size={14} className="text-amber-600" /> Pas Foto Formal
+                (JPG/PNG)
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100 cursor-pointer"
+                onChange={(e) =>
+                  setFormData({ ...formData, foto_jpg: e.target.files[0] })
+                }
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-700 hover:to-orange-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-orange-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 text-sm mt-4"
           >
-            <option value="S2">Magister (S2)</option>
-            <option value="S3">Doktor (S3)</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Program Studi
-          </label>
-          <input
-            type="text"
-            placeholder="Masukkan Prodi Tujuan"
-            className="w-full p-3 border rounded-lg"
-            onChange={(e) =>
-              setFormData({ ...formData, prodi: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Pendidikan Terakhir
-          </label>
-          <input
-            type="text"
-            placeholder="Contoh: S1 Teknik Informatika"
-            className="w-full p-3 border rounded-lg"
-            onChange={(e) =>
-              setFormData({ ...formData, pendidikan_terakhir: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Ijazah/Berkas (PDF)
-            </label>
-            <input
-              type="file"
-              accept=".pdf"
-              className="text-sm"
-              onChange={(e) =>
-                setFormData({ ...formData, dokumen_pdf: e.target.files[0] })
-              }
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Pas Foto (JPG)
-            </label>
-            <input
-              type="file"
-              accept="image/*"
-              className="text-sm"
-              onChange={(e) =>
-                setFormData({ ...formData, foto_jpg: e.target.files[0] })
-              }
-              required
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-primary-dark text-white font-bold py-3 rounded-xl hover:bg-green-900 transition-all shadow-lg"
-        >
-          Kirim Pendaftaran
-        </button>
-      </form>
+            {isLoading ? "Mengirim Berkas..." : "Kirim Berkas Pendaftaran"}{" "}
+            <ArrowRight size={16} />
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
